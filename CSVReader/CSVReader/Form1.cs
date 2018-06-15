@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
@@ -32,7 +33,12 @@ namespace CSVReader
                     fileLines = File.ReadAllLines(openFileDialog1.FileName);
                     fileCells = fileLines[0].Split(new char[] { ',' });
                     int length = fileLines.Length;
-
+                    int columns = fileLines.GetLength(0);
+                    DataTable dt = new DataTable();
+                    //for (int i = 0; i < columns; i++)
+                    //{
+                    //    dt.Columns.Add(fileCells[i].);
+                    //}
                 }
 
 
