@@ -72,6 +72,8 @@ namespace CSVReader
                 BindingSource bindingSource = new BindingSource();
                 bindingSource.DataSource = dataTable;
                 dataGridView1.DataSource = bindingSource;
+
+                populateComboBoxX(dataTable);
             }
             catch (Exception ex)
             {
@@ -79,6 +81,16 @@ namespace CSVReader
             }
 
 
+        }
+
+        private void populateComboBoxX(DataTable dataTable)
+        {
+            comboBoxX.Items.Add(dataTable.Columns[0].ColumnName);
+
+            foreach (DataColumn item in dataTable.Columns)
+            {
+                comboBoxX.Items.Add(item.ColumnName);
+            }
         }
     }
 }
