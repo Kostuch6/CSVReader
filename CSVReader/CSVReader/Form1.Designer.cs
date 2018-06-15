@@ -77,6 +77,7 @@
 			this.button1.TabIndex = 2;
 			this.button1.Text = "button1";
 			this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// button2
 			// 
@@ -144,7 +145,7 @@
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.chart1);
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
