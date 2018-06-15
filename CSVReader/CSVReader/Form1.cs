@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
@@ -52,6 +53,18 @@ namespace CSVReader
             BindingSource bindingSource = new BindingSource();
             bindingSource.DataSource = dataTable;
             dataGridView1.DataSource = bindingSource;
+
+			populateComboBoxX(dataTable);
         }
+
+		private void populateComboBoxX(DataTable dataTable)
+		{
+			comboBoxX.Items.Add(dataTable.Columns[0].ColumnName);
+
+			foreach (DataColumn item in dataTable.Columns)
+			{
+				comboBoxX.Items.Add(item.ColumnName);
+			}
+		}
     }
 }
