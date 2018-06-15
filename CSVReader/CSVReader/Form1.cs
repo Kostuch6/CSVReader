@@ -20,7 +20,7 @@ namespace CSVReader
 
         }
 
-        private void chooseFile_Click(object sender, EventArgs e)
+        private DataTable uploadFile()
         {
             try
             {
@@ -28,36 +28,57 @@ namespace CSVReader
                 string[] fileCells;
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    var x = openFileDialog1.FileName;
-                    //StreamReader sr = new StreamReader(openFileDialog1.FileName);
                     fileLines = File.ReadAllLines(openFileDialog1.FileName);
                     fileCells = fileLines[0].Split(new char[] { ',' });
-                    int length = fileLines.Length;
-                    int columns = fileLines.GetLength(0);
+
+                    int columns = fileCells.GetLength(0);
                     DataTable dt = new DataTable();
-                    //for (int i = 0; i < columns; i++)
-                    //{
-                    //    dt.Columns.Add(fileCells[i].);
-                    //}
+                    for (int i = 0; i < columns; i++)
+                    {
+                        dt.Columns.Add(fileCells[i].ToLower(), typeof(string));
+                    }
+                    DataRow dr;
+
+                    for (int i = 1; i < fileLines.GetLength(0); i++)
+                    {
+                        fileCells = fileLines[i].Split(new char[] { ',' });
+                        dr = dt.NewRow();
+                        for (int f = 0; f < columns; f++)
+                            dr[f] = fileCells[f];
+                        dt.Rows.Add(dr);
+                    }
+
+                    return dt;
                 }
-
-
+                else
+                    return null;
             }
             catch (Exception ex)
             {
-
+                return null;
             }
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataGridHandler dataGridHandler = new DataGridHandler();
-            DataTable dataTable = dataGridHandler.FillDataGrid();
+            try
+            {
+                //DataGridHandler dataGridHandler = new DataGridHandler();
+                DataTable dataTable = uploadFile();
+                if (dataTable == null)
+                    return;
 
-            BindingSource bindingSource = new BindingSource();
-            bindingSource.DataSource = dataTable;
-            dataGridView1.DataSource = bindingSource;
+                BindingSource bindingSource = new BindingSource();
+                bindingSource.DataSource = dataTable;
+                dataGridView1.DataSource = bindingSource;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
         }
     }
 }
