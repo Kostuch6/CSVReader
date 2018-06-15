@@ -40,6 +40,7 @@
 			this.comboBoxY = new System.Windows.Forms.ComboBox();
 			this.labelX = new System.Windows.Forms.Label();
 			this.labelY = new System.Windows.Forms.Label();
+			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
@@ -50,14 +51,14 @@
 			this.chart1.ChartAreas.Add(chartArea1);
 			legend1.Name = "Legend1";
 			this.chart1.Legends.Add(legend1);
-			this.chart1.Location = new System.Drawing.Point(781, 12);
-			this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.chart1.Location = new System.Drawing.Point(784, 12);
+			this.chart1.Margin = new System.Windows.Forms.Padding(2);
 			this.chart1.Name = "chart1";
 			series1.ChartArea = "ChartArea1";
 			series1.Legend = "Legend1";
 			series1.Name = "Series1";
 			this.chart1.Series.Add(series1);
-			this.chart1.Size = new System.Drawing.Size(557, 441);
+			this.chart1.Size = new System.Drawing.Size(556, 441);
 			this.chart1.TabIndex = 0;
 			this.chart1.Text = "chart1";
 			// 
@@ -138,6 +139,10 @@
 			this.labelY.TabIndex = 8;
 			this.labelY.Text = "Wybierz oś Y";
 			// 
+			// openFileDialog1
+			// 
+			this.openFileDialog1.FileName = "openFileDialog1";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -152,7 +157,7 @@
 			this.Controls.Add(this.chooseFile);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.chart1);
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
