@@ -43,5 +43,15 @@ namespace CSVReader
             }
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DataGridHandler dataGridHandler = new DataGridHandler();
+            DataTable dataTable = dataGridHandler.FillDataGrid();
+
+            BindingSource bindingSource = new BindingSource();
+            bindingSource.DataSource = dataTable;
+            dataGridView1.DataSource = bindingSource;
+        }
     }
 }
