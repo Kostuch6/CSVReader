@@ -19,6 +19,8 @@ namespace CSVReader
     {
         private string loadedFileName;
 
+		private DataTable dataTable;
+
         public Form1()
         {
             InitializeComponent();
@@ -136,7 +138,7 @@ namespace CSVReader
             try
             {
                 //DataGridHandler dataGridHandler = new DataGridHandler();
-                DataTable dataTable = uploadFile();
+                dataTable = uploadFile();
                 if (dataTable == null)
                     return;
 
@@ -157,11 +159,12 @@ namespace CSVReader
 
         private void populateComboBoxX(DataTable dataTable)
         {
-            comboBoxX.Items.Add(dataTable.Columns[0].ColumnName);
-
-            foreach (DataColumn item in dataTable.Columns)
+			comboBoxX.Items.Clear();
+			comboBoxY.Items.Clear();
+			foreach (DataColumn item in dataTable.Columns)
             {
                 comboBoxX.Items.Add(item.ColumnName);
+				comboBoxY.Items.Add(item.ColumnName);
             }
         }
 
@@ -169,5 +172,33 @@ namespace CSVReader
         {
             saveFile();
         }
-    }
+
+		private void drawChartButton_Click(object sender, EventArgs e)
+		{
+			if (dataTable == null)
+			{
+				MessageHandler.ShowMessage("Błąd!", "Należy otworzyć plik .csv.");
+			}
+			else if (comboBoxX.SelectedItem == null || comboBoxY.SelectedItem == null)
+			{
+				MessageHandler.ShowMessage("Błąd!", "Do wykonania wykresu wymagany jest wybór obu kolumn.");
+			}
+			else
+			{
+				chart1.Series["Series"].Points.Clear();
+
+                String xAxisName = comboBoxX.SelectedItem.ToString();
+				String yAxisName = comboBoxY.SelectedItem.ToString();
+
+				DataColumn xColumn = dataTable.Columns[xAxisName];
+				DataColumn yColumn = dataTable.Columns[yAxisName];
+
+				for (int i = 0; i < dataTable.Rows.Count; i++)
+				{
+					chart1.Series["Series"].Points.AddXY(dataTable.Rows[i][xColumn], dataTable.Rows[i][yColumn]);
+                }
+				
+			}            
+		}
+	}
 }
