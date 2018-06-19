@@ -44,6 +44,7 @@
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.drawChartButton = new System.Windows.Forms.Button();
+			this.comboBoxChartType = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
@@ -58,9 +59,10 @@
 			this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.chart1.Name = "chart1";
 			series1.ChartArea = "ChartArea1";
-			series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+			series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
 			series1.Legend = "Legend1";
 			series1.Name = "Series";
+			series1.YValuesPerPoint = 2;
 			this.chart1.Series.Add(series1);
 			this.chart1.Size = new System.Drawing.Size(556, 441);
 			this.chart1.TabIndex = 0;
@@ -159,11 +161,21 @@
 			this.drawChartButton.UseVisualStyleBackColor = true;
 			this.drawChartButton.Click += new System.EventHandler(this.drawChartButton_Click);
 			// 
+			// comboBoxChartType
+			// 
+			this.comboBoxChartType.FormattingEnabled = true;
+			this.comboBoxChartType.Location = new System.Drawing.Point(781, 583);
+			this.comboBoxChartType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.comboBoxChartType.Name = "comboBoxChartType";
+			this.comboBoxChartType.Size = new System.Drawing.Size(121, 24);
+			this.comboBoxChartType.TabIndex = 10;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1351, 794);
+			this.Controls.Add(this.comboBoxChartType);
 			this.Controls.Add(this.drawChartButton);
 			this.Controls.Add(this.labelY);
 			this.Controls.Add(this.labelX);
@@ -199,6 +211,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.Button drawChartButton;
+		private System.Windows.Forms.ComboBox comboBoxChartType;
 	}
 }
 

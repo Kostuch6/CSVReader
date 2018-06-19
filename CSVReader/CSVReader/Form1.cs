@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace CSVReader
 {
@@ -36,10 +37,18 @@ namespace CSVReader
 
             #region saveButton
             saveData.Enabled = false;
-            #endregion
-        }
+			#endregion
 
-        private DataTable uploadFile()
+			#region chartType comboBox
+			comboBoxChartType.Items.Add(SeriesChartType.Line);
+			comboBoxChartType.Items.Add(SeriesChartType.Bar);
+			comboBoxChartType.Items.Add(SeriesChartType.Column);
+			comboBoxChartType.Items.Add(SeriesChartType.Pie);
+			comboBoxChartType.Items.Add(SeriesChartType.Point);
+			#endregion
+		}
+
+		private DataTable uploadFile()
         {
             try
             {
@@ -146,7 +155,9 @@ namespace CSVReader
                 bindingSource.DataSource = dataTable;
                 dataGridView1.DataSource = bindingSource;
 
-                populateComboBoxX(dataTable);
+				resetView();
+
+                populateComboBoxes(dataTable);
                 saveData.Enabled = true;
             }
             catch (Exception ex)
@@ -157,16 +168,23 @@ namespace CSVReader
 
         }
 
-        private void populateComboBoxX(DataTable dataTable)
-        {
+		private void resetView()
+		{
+			chart1.Series["Series"].Points.Clear();
 			comboBoxX.Items.Clear();
+			comboBoxX.Text = "";
 			comboBoxY.Items.Clear();
+			comboBoxY.Text = "";
+		}
+
+		private void populateComboBoxes(DataTable dataTable)
+        {
 			foreach (DataColumn item in dataTable.Columns)
             {
                 comboBoxX.Items.Add(item.ColumnName);
 				comboBoxY.Items.Add(item.ColumnName);
             }
-        }
+		}
 
         private void saveData_Click(object sender, EventArgs e)
         {
@@ -183,11 +201,15 @@ namespace CSVReader
 			{
 				MessageHandler.ShowMessage("Błąd!", "Do wykonania wykresu wymagany jest wybór obu kolumn.");
 			}
+			else if(comboBoxChartType.SelectedItem == null)
+			{
+				MessageHandler.ShowMessage("Błąd!", "Należy wybrać rodzaj wykresu.");
+			}
 			else
 			{
 				chart1.Series["Series"].Points.Clear();
 
-                String xAxisName = comboBoxX.SelectedItem.ToString();
+				String xAxisName = comboBoxX.SelectedItem.ToString();
 				String yAxisName = comboBoxY.SelectedItem.ToString();
 
 				DataColumn xColumn = dataTable.Columns[xAxisName];
@@ -196,9 +218,9 @@ namespace CSVReader
 				for (int i = 0; i < dataTable.Rows.Count; i++)
 				{
 					chart1.Series["Series"].Points.AddXY(dataTable.Rows[i][xColumn], dataTable.Rows[i][yColumn]);
+					chart1.Series["Series"].ChartType = (SeriesChartType)comboBoxChartType.SelectedItem;
                 }
-				
-			}            
+			}
 		}
 	}
 }
