@@ -26,5 +26,14 @@ namespace CSVReader.Handlers
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             var result = MessageBox.Show(message, caption, buttons);
         }
+
+        public static bool ShowMessageQuestion(string caption, string message)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            if (MessageBox.Show(message, caption, buttons) == DialogResult.Yes)
+                return true;
+            else
+                return false;
+        }
     }
 }

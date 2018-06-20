@@ -19,8 +19,8 @@ namespace CSVReader
     public partial class Form1 : Form
     {
         private string loadedFileName;
-
 		private DataTable dataTable;
+        private bool dataSourceChanged;
 
         public Form1()
         {
@@ -35,12 +35,13 @@ namespace CSVReader
             saveFileDialog1.Filter = "Pliki .csv (*.csv) |*.csv";
             #endregion
 
-            #region saveButton
+            #region buttons
             saveData.Enabled = false;
-			#endregion
+            clearData.Enabled = false;
+            #endregion
 
-			#region chartType comboBox
-			comboBoxChartType.Items.Add(SeriesChartType.Line);
+            #region chartType comboBox
+            comboBoxChartType.Items.Add(SeriesChartType.Line);
 			comboBoxChartType.Items.Add(SeriesChartType.Bar);
 			comboBoxChartType.Items.Add(SeriesChartType.Column);
 			comboBoxChartType.Items.Add(SeriesChartType.Pie);
@@ -48,108 +49,21 @@ namespace CSVReader
 			#endregion
 		}
 
-		private DataTable uploadFile()
-        {
-            try
-            {
-                string[] fileLines;
-                string[] fileCells;
-                if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    if (Path.GetExtension(openFileDialog1.FileName).ToLower() != ".csv")
-                    {
-                        MessageHandler.ShowError("Plik nie posiada rozszerzenia .csv!");
-                        return null;
-                    }
-
-                    fileLines = File.ReadAllLines(openFileDialog1.FileName);
-                    fileCells = fileLines[0].Split(new char[] { ',' });
-
-                    int columns = fileCells.GetLength(0);
-                    DataTable dt = new DataTable();
-                    for (int i = 0; i < columns; i++)
-                    {
-                        dt.Columns.Add(fileCells[i].ToLower(), typeof(string));
-                    }
-                    DataRow dr;
-
-                    for (int i = 1; i < fileLines.GetLength(0); i++)
-                    {
-                        fileCells = fileLines[i].Split(new char[] { ',' });
-                        if (!fileCells.All(x => x == ""))
-                        {
-                            dr = dt.NewRow();
-                            for (int f = 0; f < columns; f++)
-                                dr[f] = fileCells[f];
-                            dt.Rows.Add(dr);
-                        }                       
-                    }
-
-                    loadedFileName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
-                    return dt;
-                }
-                else
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                MessageHandler.ShowError(ex);
-                return null;
-            }
-        }
-
-        private void saveFile()
-        {
-            try
-            {
-                saveFileDialog1.FileName = loadedFileName + "_new.csv";
-                var dataSource = dataGridView1;
-                StringBuilder sb = new StringBuilder();
-                //dodawanie nagłówków kolumn
-                foreach (DataGridViewColumn column in dataSource.Columns)
-                {
-                    sb.Append(column.HeaderText + ",");
-                }
-                sb.Remove(sb.Length - 1, 1);
-                sb.AppendLine();
-
-                //dodawanie wartości z rzędów
-                foreach (DataGridViewRow row in dataSource.Rows)
-                {
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        if (cell.Value != null)
-                            sb.Append(cell.Value.ToString() + ",");
-                    }
-                    sb.Remove(sb.Length - 1, 1);
-                    sb.AppendLine();
-                }
-
-                //zapis pliku
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    string path = saveFileDialog1.FileName;
-                    if (Path.GetExtension(path).ToLower() != ".csv")
-                        path = Path.GetFileNameWithoutExtension(path) + ".csv";
-                    File.WriteAllText(saveFileDialog1.FileName, sb.ToString());
-                    MessageHandler.ShowMessage("Sukces", "Pomyślnie zapisano plik!");
-                }
-                sb.Clear();
-            }
-            catch (Exception ex)
-            {
-                MessageHandler.ShowError(ex);
-            }
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                //DataGridHandler dataGridHandler = new DataGridHandler();
-                dataTable = uploadFile();
+                dataTable = FileHandler.UploadFile(loadedFileName, saveFileDialog1, openFileDialog1, dataGridView1);
                 if (dataTable == null)
+                {
                     return;
+                }                 
+                else
+                {
+                    loadedFileName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
+                    dataSourceChanged = false;
+                    clearData.Enabled = true;
+                }
 
                 BindingSource bindingSource = new BindingSource();
                 bindingSource.DataSource = dataTable;
@@ -162,15 +76,14 @@ namespace CSVReader
             }
             catch (Exception ex)
             {
-
+                MessageHandler.ShowError(ex);
             }
-
-
         }
 
 		private void resetView()
 		{
-			chart1.Series["Series"].Points.Clear();
+            //chart1.Series["Series"].Points.Clear(); WALIŁO BŁĘDEM, NIŻEJ JEST OK
+            chart1.Series.Clear();
 			comboBoxX.Items.Clear();
 			comboBoxX.Text = "";
 			comboBoxY.Items.Clear();
@@ -188,7 +101,7 @@ namespace CSVReader
 
         private void saveData_Click(object sender, EventArgs e)
         {
-            saveFile();
+            FileHandler.SaveFile(loadedFileName, saveFileDialog1, dataGridView1);
         }
 
 		private void drawChartButton_Click(object sender, EventArgs e)
@@ -222,5 +135,40 @@ namespace CSVReader
                 }
 			}
 		}
-	}
+
+        private void clearData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataSourceChanged)
+                {
+                    if (MessageHandler.ShowMessageQuestion("Zapisać zmiany?", "Czy chcesz zapisać zmiany przed otwarciem nowego pliku?"))
+                        FileHandler.SaveFile(loadedFileName, saveFileDialog1, dataGridView1);
+                }
+
+                saveData.Enabled = false;
+                clearData.Enabled = false;
+                dataGridView1.DataSource = null;
+                chart1.Series.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageHandler.ShowError(ex);
+            }
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            dataSourceChanged = true;
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (dataSourceChanged)
+            {
+                if (MessageHandler.ShowMessageQuestion("Zapisać zmiany?", "Czy chcesz zapisać zmiany przed zamknięciem aplikacji?"))
+                    FileHandler.SaveFile(loadedFileName, saveFileDialog1, dataGridView1);
+            }        
+        }
+    }
 }
