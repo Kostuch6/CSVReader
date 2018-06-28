@@ -55,11 +55,11 @@ namespace CSVReader.Handlers
             }
         }
 
-        public static DataTable UploadFile(string fileName, SaveFileDialog saveFileDialog, OpenFileDialog openFileDialog, DataGridView dataGridView)
+        public static DataTable UploadFile(bool dataSourceChanged, string fileName, SaveFileDialog saveFileDialog, OpenFileDialog openFileDialog, DataGridView dataGridView)
         {
             try
             {
-                if (dataGridView.DataSource != null)
+                if (dataSourceChanged)
                 {
                     if (MessageHandler.ShowMessageQuestion("Zapisać zmiany?", "Czy chcesz zapisać zmiany przed otwarciem nowego pliku?"))
                         FileHandler.SaveFile(fileName, saveFileDialog, dataGridView);

@@ -53,7 +53,7 @@ namespace CSVReader
         {
             try
             {
-                dataTable = FileHandler.UploadFile(loadedFileName, saveFileDialog1, openFileDialog1, dataGridView1);
+                dataTable = FileHandler.UploadFile(dataSourceChanged, loadedFileName, saveFileDialog1, openFileDialog1, dataGridView1);
                 if (dataTable == null)
                 {
                     return;
@@ -106,7 +106,7 @@ namespace CSVReader
 
 		private void drawChartButton_Click(object sender, EventArgs e)
 		{
-			if (dataTable == null)
+            if (dataTable == null)
 			{
 				MessageHandler.ShowMessage("Błąd!", "Należy otworzyć plik .csv.");
 			}
@@ -120,13 +120,16 @@ namespace CSVReader
 			}
 			else
 			{
-				chart1.Series["Series"].Points.Clear();
+                //chart1.Series["Series"].Points.Clear();
+                chart1.Series.Clear();
 
-				String xAxisName = comboBoxX.SelectedItem.ToString();
+                String xAxisName = comboBoxX.SelectedItem.ToString();
 				String yAxisName = comboBoxY.SelectedItem.ToString();
 
 				DataColumn xColumn = dataTable.Columns[xAxisName];
 				DataColumn yColumn = dataTable.Columns[yAxisName];
+
+                chart1.Series.Add("Series");
 
 				for (int i = 0; i < dataTable.Rows.Count; i++)
 				{
@@ -148,7 +151,12 @@ namespace CSVReader
 
                 saveData.Enabled = false;
                 clearData.Enabled = false;
+                dataTable = null;
                 dataGridView1.DataSource = null;
+                resetView();
+                comboBoxChartType.SelectedItem = null;
+                comboBoxChartType.SelectedText = "";
+
                 chart1.Series.Clear();
             }
             catch (Exception ex)
