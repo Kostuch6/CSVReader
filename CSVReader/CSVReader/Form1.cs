@@ -47,6 +47,8 @@ namespace CSVReader
 			comboBoxChartType.Items.Add(SeriesChartType.Pie);
 			comboBoxChartType.Items.Add(SeriesChartType.Point);
 			#endregion
+
+			chart1.Series.Add("Series");
 		}
 
         private void button1_Click(object sender, EventArgs e)
@@ -69,7 +71,7 @@ namespace CSVReader
                 bindingSource.DataSource = dataTable;
                 dataGridView1.DataSource = bindingSource;
 
-				resetView();
+				resetChart();
 
                 populateComboBoxes(dataTable);
                 saveData.Enabled = true;
@@ -80,10 +82,9 @@ namespace CSVReader
             }
         }
 
-		private void resetView()
+		private void resetChart()
 		{
-            //chart1.Series["Series"].Points.Clear(); WALIŁO BŁĘDEM, NIŻEJ JEST OK
-            chart1.Series.Clear();
+            chart1.Series["Series"].Points.Clear();
 			comboBoxX.Items.Clear();
 			comboBoxX.Text = "";
 			comboBoxY.Items.Clear();
@@ -149,8 +150,8 @@ namespace CSVReader
                 saveData.Enabled = false;
                 clearData.Enabled = false;
                 dataGridView1.DataSource = null;
-                chart1.Series.Clear();
-            }
+				resetChart();
+			}
             catch (Exception ex)
             {
                 MessageHandler.ShowError(ex);
