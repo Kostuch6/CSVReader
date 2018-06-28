@@ -90,6 +90,7 @@ namespace CSVReader
 			comboBoxY.Items.Clear();
 			comboBoxY.Text = "";
             comboBoxChartType.Text = "";
+			comboBoxChartType.SelectedItem = null;
 		}
 
 		private void populateComboBoxes(DataTable dataTable)
@@ -122,16 +123,13 @@ namespace CSVReader
 			}
 			else
 			{
-                //chart1.Series["Series"].Points.Clear();
-                chart1.Series.Clear();
+                chart1.Series["Dane"].Points.Clear();
 
                 String xAxisName = comboBoxX.SelectedItem.ToString();
 				String yAxisName = comboBoxY.SelectedItem.ToString();
 
 				DataColumn xColumn = dataTable.Columns[xAxisName];
 				DataColumn yColumn = dataTable.Columns[yAxisName];
-
-                chart1.Series.Add("Dane");
 
 				for (int i = 0; i < dataTable.Rows.Count; i++)
 				{

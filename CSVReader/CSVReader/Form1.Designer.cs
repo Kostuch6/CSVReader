@@ -44,6 +44,7 @@
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.drawChartButton = new System.Windows.Forms.Button();
 			this.comboBoxChartType = new System.Windows.Forms.ComboBox();
+			this.label1 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
@@ -147,10 +148,10 @@
 			// 
 			// drawChartButton
 			// 
-			this.drawChartButton.Location = new System.Drawing.Point(1085, 502);
+			this.drawChartButton.Location = new System.Drawing.Point(1085, 501);
 			this.drawChartButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.drawChartButton.Name = "drawChartButton";
-			this.drawChartButton.Size = new System.Drawing.Size(75, 23);
+			this.drawChartButton.Size = new System.Drawing.Size(75, 24);
 			this.drawChartButton.TabIndex = 9;
 			this.drawChartButton.Text = "Rysuj";
 			this.drawChartButton.UseVisualStyleBackColor = true;
@@ -165,11 +166,21 @@
 			this.comboBoxChartType.Size = new System.Drawing.Size(121, 24);
 			this.comboBoxChartType.TabIndex = 10;
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(780, 558);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(157, 17);
+			this.label1.TabIndex = 11;
+			this.label1.Text = "Wybierz rodzaj wykresu";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1351, 794);
+			this.ClientSize = new System.Drawing.Size(1351, 626);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.comboBoxChartType);
 			this.Controls.Add(this.drawChartButton);
 			this.Controls.Add(this.labelY);
@@ -208,6 +219,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.Button drawChartButton;
 		private System.Windows.Forms.ComboBox comboBoxChartType;
+		private System.Windows.Forms.Label label1;
 	}
 }
 
