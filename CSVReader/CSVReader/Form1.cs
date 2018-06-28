@@ -48,7 +48,7 @@ namespace CSVReader
 			comboBoxChartType.Items.Add(SeriesChartType.Point);
 			#endregion
 
-			chart1.Series.Add("Series");
+			chart1.Series.Add("Dane");
 		}
 
         private void button1_Click(object sender, EventArgs e)
@@ -84,11 +84,12 @@ namespace CSVReader
 
 		private void resetChart()
 		{
-            chart1.Series["Series"].Points.Clear();
+            chart1.Series["Dane"].Points.Clear();
 			comboBoxX.Items.Clear();
 			comboBoxX.Text = "";
 			comboBoxY.Items.Clear();
 			comboBoxY.Text = "";
+            comboBoxChartType.Text = "";
 		}
 
 		private void populateComboBoxes(DataTable dataTable)
@@ -130,12 +131,12 @@ namespace CSVReader
 				DataColumn xColumn = dataTable.Columns[xAxisName];
 				DataColumn yColumn = dataTable.Columns[yAxisName];
 
-                chart1.Series.Add("Series");
+                chart1.Series.Add("Dane");
 
 				for (int i = 0; i < dataTable.Rows.Count; i++)
 				{
-					chart1.Series["Series"].Points.AddXY(dataTable.Rows[i][xColumn], dataTable.Rows[i][yColumn]);
-					chart1.Series["Series"].ChartType = (SeriesChartType)comboBoxChartType.SelectedItem;
+					chart1.Series["Dane"].Points.AddXY(dataTable.Rows[i][xColumn], dataTable.Rows[i][yColumn]);
+					chart1.Series["Dane"].ChartType = (SeriesChartType)comboBoxChartType.SelectedItem;
                 }
 			}
 		}
